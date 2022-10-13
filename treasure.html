@@ -28,6 +28,11 @@
     
             <div id="help" class="col-sm row item bg-warning">Help report</div>
         </div><br>
+        <div class="container text-center">
+            <button class="btn btn-success" type="submit" onclick="resetGame()">Reset</button>
+        </div>
+        <br>
+      </div>
 
         <div class="container">
         <div class="row">
@@ -53,7 +58,7 @@
         <div class="row">
             <div class="col-sm"><img src="treasurechest.jpg" alt="treasurechest" class="img-fluid" height="100" width="100" id="chest10" onclick="check(10)"></div>
             <div class="col-sm"><img src="treasurechest.jpg" alt="treasurechest" class="img-fluid" height="100" width="100" id="chest11" onclick="check(11)"></div>
-            <div class="col-sm"><img src="help.jpg" alt="help image" class="img-fluid" height="80" width="80" id="chest12" onclick="check(12)"></div>
+            <div class="col-sm"><img src="help.jpg" alt="help image" class="img-fluid" height="80" width="80" id="help" onclick="help()"></div>
             <div class="col-sm"><img src="treasurechest.jpg" alt="treasurechest" class="img-fluid" height="100" width="100" id="chest13" onclick="check(13)"></div>
             <div class="col-sm"><img src="treasurechest.jpg" alt="treasurechest" class="img-fluid" height="100" width="100" id="chest14" onclick="check(14)"></div>
         </div>
@@ -88,7 +93,7 @@
         let chestCount = 0
         let score = 0
         let lastCheck = 12
-        let treasureLocation = Math.floor(Math.random() * 24)
+        let treasureLocation = 18
     
         function check(position) {
             image = document.getElementById(ids[position])
@@ -104,38 +109,51 @@
             lastCheck = position;
         }
     
-        function help() {
+        function help()
+  {
+    let lastRow=parseInt((lastCheck/5),10)
+    let treasureRow=parseInt((treasureLocation/5),10)
+    let result=" "
 
-            lastCheck_row = parseInt(lastCheck / 5)
+    lastCol=lastCheck%5
+    treasureCol=treasureLocation%5
 
-            lastCheck_column = parseInt(lastCheck % 5)
-            treasureLocation_row = parseInt(treasureLocation / 5)
-            treasureLocation_column = parseInt(treasureLocation % 5)
-            score += 2
+    console.log(lastCol)
+    console.log(lastRow)
+    console.log(treasureCol)
+    console.log(treasureRow)
 
-            document.getElementById("score").innerHTML = "Score is " + score
-            if(lastCheck_row == treasureLocation_row) {
-                if(lastCheck_column < treasureLocation_column) {
-                    document.getElementById("help").innerHTML = "Right"
-                } else if(lastCheck_column > treasureLocation_column) {
-                    document.getElementById("help").innerHTML = "Left"
+    if(lastRow==treasureRow&&lastCheck!=treasureLocation)
+    {
+      if(lastCheck<treasureLocation)
+      {
+        result="Right"
+      }
+      else
+      {
+        result="Left"
+      }
+    }
+    else if(lastCol==treasureCol&&lastCheck!=treasureLocation)
+    {
+      if(lastCheck<treasureLocation)
+      {
+        result="Bottom"
+      }
+      else
+      {
+        result="Up"
+      }
+    }
+    else
+    {
+      result="Sorry, No help available"
+    }
 
-                } else {
-                    document.getElementById("help").innerHTML = "Sorry, no help available"
-                }
-            } else if(lastCheck_column == treasureLocation_column) {
-                if(lastCheck_row < treasureLocation_row) {
-                    document.getElementById("help").innerHTML = "Down"
-                } else if(lastCheck_row > treasureLocation_row) {
-                    document.getElementById("help").innerHTML = "Up"
-
-                } else {
-                    document.getElementById("help").innerHTML = "Sorry, no help available"
-                }
-            } else {
-                document.getElementById("help").innerHTML = "Sorry, no help available"
-            }
-        }
+    score=score+2
+    document.getElementById("score").innerText="Score is "+score+"."
+    document.getElementById("help").innerText=result
+  }
        // BONUS 1
        function resetGame() {
             treasureLocation = Math.floor(Math.random() * 24)
